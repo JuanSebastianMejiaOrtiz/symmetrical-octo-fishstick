@@ -19,6 +19,13 @@ def plot_interpolation(x, f, label, sensor):
     plt.grid(True)
 
 
+def evaluate_interpolation(f, x_eval):
+    """
+    Evalua la función de interpolación en un punto x
+    """
+    return f(x_eval)
+
+
 def analyze_sensor(sensor_id):
     """
     Realiza análisis completo para un sensor
@@ -42,14 +49,29 @@ def analyze_sensor(sensor_id):
 
     # Graficar cada método
     plt.plot(temperature, voltage, 'o', label='Datos')
-    plot_interpolation(temperature, f_poly, "Polinomial", sensor_id)
+    # plot_interpolation(temperature, f_poly, "Polinomial", sensor_id)
     plot_interpolation(temperature, f_cheb, "Chebyshev", sensor_id)
-    plot_interpolation(temperature, f_spline, "Splines cúbicos", sensor_id)
+    # plot_interpolation(temperature, f_spline, "Splines cúbicos", sensor_id)
+
+    functions = {"polinomial": f_poly, "chebyshev": f_cheb, "cubicSplines": f_spline}
+    return functions
 
 
 # Análisis para cada sensor
 sensors = ['A', 'B', 'C']
+functions = {}
 for sensor in sensors:
-    analyze_sensor(sensor)
+    functions[sensor] = analyze_sensor(sensor)
+
+# Evaluación de funciones
+temperatures = [25, 55, 95]
+for temperature in temperatures:
+    print(f"Temperatura evaluada: {temperature} °C")
+    for sensor in sensors:
+        print(f"Sensor {sensor}:")
+        print(f"Polinomial: {evaluate_interpolation(functions[sensor]['polinomial'], temperature)}")
+        print(f"Chebyshev: {evaluate_interpolation(functions[sensor]['chebyshev'], temperature)}")
+        print(f"Splines cúbicos: {evaluate_interpolation(functions[sensor]['cubicSplines'], temperature)}")
+        print("\n")
 
 plt.show()
