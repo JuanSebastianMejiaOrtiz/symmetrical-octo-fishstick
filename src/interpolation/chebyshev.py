@@ -36,7 +36,7 @@ def chebyshev_interpolation(x_values, y_values, n=None):
     cheb_nodes = np.cos((2 * k - 1) * np.pi / (2 * n))  # Nodos en [-1, 1]
     x_cheb = 0.5 * (a + b) + 0.5 * (b - a) * cheb_nodes  # Mapea a [a, b]
 
-    # Evaluar en nodos de Chebyshev usando splines cúbicos (estable)
+    # Interpolación polinomial usando nodos de Chebyshev
     _, f_interp = polynomialInterpolation(x_values, y_values)
     y_cheb = f_interp(x_cheb)
 
