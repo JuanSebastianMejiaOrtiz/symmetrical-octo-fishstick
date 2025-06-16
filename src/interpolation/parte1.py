@@ -69,9 +69,9 @@ for temperature in temperatures:
     print(f"Temperatura evaluada: {temperature} °C")
     for sensor in sensors:
         print(f"Sensor {sensor}:")
-        print(f"Polinomial: {evaluate_interpolation(functions[sensor]['polinomial'], temperature)}")
-        print(f"Chebyshev: {evaluate_interpolation(functions[sensor]['chebyshev'], temperature)}")
-        print(f"Splines cúbicos: {evaluate_interpolation(functions[sensor]['cubicSplines'], temperature)}")
+        print(f"Polinomial: {evaluate_interpolation(functions[sensor]['polinomial'], temperature):.2f}")
+        print(f"Chebyshev: {evaluate_interpolation(functions[sensor]['chebyshev'], temperature):.2f}")
+        print(f"Splines cúbicos: {evaluate_interpolation(functions[sensor]['cubicSplines'], temperature):.2f}")
         print("\n")
 
 plt.show()
