@@ -14,4 +14,6 @@ def cubicSplinesInterpolation(x_values, y_values):
     '''
     if len(x_values) != len(y_values):
         raise ValueError("x_values and y_values must have the same length")
+    if len(x_values) == 0:
+        raise ValueError("The arrays cannot be empty")
     return interp1d(x_values, y_values, kind='cubic')

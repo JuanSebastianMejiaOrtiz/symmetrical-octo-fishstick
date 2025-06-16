@@ -23,6 +23,8 @@ def polynomialInterpolation(x_values, y_values):
     '''
     if len(x_values) != len(y_values):
         raise ValueError("t and y must have the same length")
+    if len(x_values) == 0:
+        raise ValueError("The arrays cannot be empty")
     n = len(x_values)
     x_scaled = changeScale(x_values, min(x_values), max(x_values))
     A = np.vander(x_scaled, N=n, increasing=True)

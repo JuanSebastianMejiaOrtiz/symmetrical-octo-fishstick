@@ -1,5 +1,4 @@
 import numpy as np
-from polynomial import polynomialInterpolation
 
 
 def chebyshev_interpolation(x_values, y_values, n=None):
@@ -14,7 +13,7 @@ def chebyshev_interpolation(x_values, y_values, n=None):
         Si es None, se usa len(x_values).
 
     Retorna:
-    - x_cheb: nodos de Chebyshev en el intervalo [a, b].
+    - coeff: Coeficientes del polinomio interpolador.
     - f: polinomio interpolador.
     """
     if len(x_values) != len(y_values):
@@ -31,16 +30,31 @@ def chebyshev_interpolation(x_values, y_values, n=None):
 
     a, b = min(x_values), max(x_values)
 
-    # Genera nodos de Chebyshev en [a, b]
-    k = np.arange(1, n + 1)
-    cheb_nodes = np.cos((2 * k - 1) * np.pi / (2 * n))  # Nodos en [-1, 1]
-    x_cheb = 0.5 * (a + b) + 0.5 * (b - a) * cheb_nodes  # Mapea a [a, b]
+    # Paso 1: Mapear al intervalo [-1, 1]
+    def scale(x):
+        return (2 * x - (a + b)) / (b - a)
 
-    # Interpolación polinomial usando nodos de Chebyshev
-    _, f_interp = polynomialInterpolation(x_values, y_values)
-    y_cheb = f_interp(x_cheb)
+    x_scaled = scale(np.array(x_values))
 
-    # Ajustar polinomio de Chebyshev
-    poly = np.polynomial.Chebyshev.fit(x_cheb, y_cheb, deg=n-1)
+    # Paso 2: Calcular bases de Chebyshev (hasta grado n-1)
+    def T(k, t):
+        return np.cos(k * np.arccos(t))
 
-    return x_cheb, poly
+    # Construir matriz de diseño
+    A = np.zeros((len(x_scaled), n))
+    for i, x in enumerate(x_scaled):
+        for j in range(n):
+            A[i, j] = T(j, x)
+
+    # Paso 3: Resolver el sistema lineal
+    coeff = np.linalg.solve(A, y_values)
+
+    # Construir función interpolante
+    def f(t):
+        t_scaled = scale(t)
+        result = 0
+        for k, c in enumerate(coeff):
+            result += c * T(k, t_scaled)
+        return result
+
+    return coeff, f

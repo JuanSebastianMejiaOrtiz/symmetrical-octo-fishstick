@@ -36,12 +36,12 @@ def analyze_sensor(sensor_id):
 
     # Aplicar diferentes métodos de interpolación
     coeff, f_poly = polynomialInterpolation(temperature, voltage)
-    nodes, f_cheb = chebyshev_interpolation(temperature, voltage)
+    coeff, f_cheb = chebyshev_interpolation(temperature, voltage)
     f_spline = cubicSplinesInterpolation(temperature, voltage)
 
     print(f"Sensor {sensor_id}:")
     print(f"Coeficientes polinomiales: {coeff}")
-    print(f"Nodos de Chebyshev: {nodes}")
+    print(f"Coeficientes Chebyshev: {coeff}")
     print("\n")
 
     # Crear figura
@@ -49,9 +49,9 @@ def analyze_sensor(sensor_id):
 
     # Graficar cada método
     plt.plot(temperature, voltage, 'o', label='Datos')
-    # plot_interpolation(temperature, f_poly, "Polinomial", sensor_id)
+    plot_interpolation(temperature, f_poly, "Polinomial", sensor_id)
     plot_interpolation(temperature, f_cheb, "Chebyshev", sensor_id)
-    # plot_interpolation(temperature, f_spline, "Splines cúbicos", sensor_id)
+    plot_interpolation(temperature, f_spline, "Splines cúbicos", sensor_id)
 
     functions = {"polinomial": f_poly, "chebyshev": f_cheb, "cubicSplines": f_spline}
     return functions
