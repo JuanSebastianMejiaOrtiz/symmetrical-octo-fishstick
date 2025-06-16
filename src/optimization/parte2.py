@@ -1,6 +1,5 @@
 import funcsAndRestrictions as fr
 import numpy as np
-# import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 
 x0 = np.array([200, 5, 100])  # Punto central
@@ -62,7 +61,7 @@ def resolver_optimizacion(metodo='SLSQP'):
     return resultados
 
 
-# 8. Ejecutar y mostrar resultados
+# Ejecutar y mostrar resultados
 if __name__ == "__main__":
     resultados = resolver_optimizacion()
 
@@ -126,5 +125,8 @@ def jac_ganancia(x):
     return np.array([-df_dx1, -df_dx2, -df_dx3])
 
 
-analizar_sensibilidad()
+analizar_sensibilidad(metodo='SLSQP')
+analizar_sensibilidad(metodo='SLSQP', jac=jac_ganancia)
+
+analizar_sensibilidad(metodo='trust-constr')
 analizar_sensibilidad(metodo='trust-constr', jac=jac_ganancia)
